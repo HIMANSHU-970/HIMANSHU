@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Success - Raja Mantri Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(45deg, #0a192f, #112240, #233554);
+            color: #fff;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .success-message {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .success-message h1 {
+            font-size: 2.5rem;
+            color: #64ffda;
+            margin-bottom: 1rem;
+        }
+
+        .success-message p {
+            font-size: 1.2rem;
+            color: #ccd6f6;
+        }
+
+        .game-info {
+            margin-bottom: 2rem;
+        }
+
+        .game-info h2 {
+            color: #64ffda;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .game-info p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #ccd6f6;
+        }
+
+        .declaration {
+            background: rgba(100, 255, 218, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .declaration h2 {
+            color: #64ffda;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .declaration ul {
+            list-style-position: inside;
+            color: #ccd6f6;
+        }
+
+        .declaration li {
+            margin-bottom: 0.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #64ffda, #40a9ff);
+            color: #0a192f;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
+        }
+
+        .buttons {
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-message">
+            <h1>Login Successful!</h1>
+            <p>Welcome to Raja Mantri Chor Sipahi</p>
+        </div>
+
+        <div class="game-info">
+            <h2>About the Game</h2>
+            <p>Raja Mantri Chor Sipahi is a classic Indian detective game that combines strategy, deception, and fun. In this game, players are secretly assigned roles of Raja (King), Mantri (Minister), Chor (Thief), and Sipahi (Police), and must use their wit to win.</p>
+            <p>The Mantri must try to catch the Chor while other players attempt to fulfill their respective roles. The game tests your ability to read people, make strategic decisions, and think on your feet!</p>
+        </div>
+
+        <div class="declaration">
+            <h2>Game Rules & Scoring</h2>
+            <ul>
+                <li>Raja (King) scores 1000 points by default</li>
+                <li>Mantri (Minister) scores 800 points if they catch the Chor</li>
+                <li>Sipahi (Police) scores 400 points</li>
+                <li>Chor (Thief) scores 0 points if caught</li>
+                <li>If Mantri fails to catch Chor:
+                    <ul>
+                        <li>Mantri's score becomes 0</li>
+                        <li>Chor's score becomes 800</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="buttons">
+            <a href="hi4.html" class="btn">Start Playing!</a>
+        </div>
+    </div>
+
+    
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Raja Mantri Chor Sipahi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: linear-gradient(45deg, #0a192f, #112240, #233554); color: #fff; overflow-x: hidden; }
+     
+    .screen {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 2rem;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .active { display: flex; }
+
+    input, button {
+      padding: 1rem;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      margin: 0.5rem;
+    }
+
+    button {
+      background: linear-gradient(45deg, #64ffda, #40a9ff);
+      color: #0a192f;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .player-card {
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: 20px;
+      margin: 0.5rem;
+      width: 200px;
+    }
+
+    .game-area {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .leaderboard {
+      margin-top: 2rem;
+    }
+
+    .game-buttons {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .game-buttons button {
+      min-width: 150px;
+    }
+  </style>
+</head>
+<body>
+  
+
+<h1>Himanshu game</h1>
+<div class="screen active" id="loginScreen">
+  <h1>Login / Sign Up</h1>
+  <input id="username" placeholder="Your Name" />
+  <input id="password" type="age" placeholder="age" />
+  <button onclick="login()">Submit</button>
+</div>
+
+
+
+
+<!-- Player Name Input Screen -->
+<div class="screen " id="playerScreen">
+  <h2>Enter Player Names</h2>
+  <div id="playerInputs"></div>
+  <button onclick="savePlayers()">Save Players</button>
+</div>
+
+<!-- Game Screen -->
+<div class="screen" id="gameScreen">
+  <h2>RAJA MANTRI CHOR SIPAHI</h2>
+  <p>Round: <span id="roundCount">1</span></p>
+  <div class="game-area" id="gameArea"></div>
+
+  <div class="game-buttons">
+    <button onclick="startRound()">Start Round</button>
+    <button onclick="resetScores()">Reset Scores</button>
+    <button onclick="editPlayers()">Edit Players</button>
+    <button onclick="goHome()">Go to Home</button>
+    <button onclick="exitGame()" style="background: crimson; color: #fff;">Exit Game</button>
+  </div>
+
+  <div class="leaderboard" id="leaderboard"></div>
+</div>
+
+<script>
+  let players = [], scores = [], round = 1;
+  const roles = ["RAJA", "MANTRI", "CHOR", "SIPAHI"];
+
+  function login() {
+    const name = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+    if (!name || !pass) return alert("Fill both fields");
+    localStorage.setItem(name, pass);
+    document.getElementById("loginScreen").classList.remove("active");
+    document.getElementById("playerScreen").classList.add("active");
+    showPlayerInputs();
+  }
+
+  function showPlayerInputs() {
+    const container = document.getElementById("playerInputs");
+    container.innerHTML = "";
+    for (let i = 0; i < 4; i++) {
+      const input = document.createElement("input");
+      input.placeholder = `Player ${i + 1}`;
+      input.value = localStorage.getItem(`p${i}`) || "";
+      container.appendChild(input);
+    }
+  }
+
+  function savePlayers() {
+    const inputs = document.querySelectorAll("#playerInputs input");
+    players = [];
+    scores = [0, 0, 0, 0];
+    inputs.forEach((inp, i) => {
+      const name = inp.value.trim() || `Player ${i + 1}`;
+      players.push(name);
+      localStorage.setItem(`p${i}`, name);
+    });
+    document.getElementById("playerScreen").classList.remove("active");
+    document.getElementById("gameScreen").classList.add("active");
+    renderGameArea();
+    updateLeaderboard();
+  }
+
+  function renderGameArea() {
+    const area = document.getElementById("gameArea");
+    area.innerHTML = "";
+    players.forEach((name, i) => {
+      area.innerHTML += `<div class="player-card"><h3>${name}</h3><p id="score${i}">Score: ${scores[i]}</p></div>`;
+    });
+  }
+
+  function startRound() {
+    const shuffledRoles = [...roles].sort(() => Math.random() - 0.5);
+    const assignments = players.map((_, i) => shuffledRoles[i]);
+    const mantriIndex = assignments.indexOf("MANTRI");
+    const chorIndex = assignments.indexOf("CHOR");
+    const guess = prompt(`${players[mantriIndex]} (MANTRI), who is CHOR? (Enter 1-4)`);
+    if (parseInt(guess) - 1 === chorIndex) {
+      scores[assignments.indexOf("RAJA")] += 1000;
+      scores[mantriIndex] += 800;
+      scores[assignments.indexOf("SIPAHI")] += 500;
+      alert("✅ Mantri guessed correctly! Points awarded.");
+    } else {
+      scores[assignments.indexOf("RAJA")] += 1000;
+      scores[mantriIndex] += 0;
+      scores[chorIndex] += 800;
+      scores[assignments.indexOf("SIPAHI")] += 500;
+      alert("❌ Mantri guessed wrong! Chor escaped!");
+    }
+    round++;
+    document.getElementById("roundCount").textContent = round;
+    renderGameArea();
+    updateLeaderboard();
+  }
+
+  function updateLeaderboard() {
+    let html = "<h3>Leaderboard</h3><ul>";
+    players.forEach((p, i) => {
+      html += `<li>${p}: ${scores[i]} pts</li>`;
+    });
+    html += "</ul>";
+    document.getElementById("leaderboard").innerHTML = html;
+  }
+
+  function resetScores() {
+    scores = [0, 0, 0, 0];
+    round = 1;
+    renderGameArea();
+    updateLeaderboard();
+    document.getElementById("roundCount").textContent = round;
+  }
+
+  function editPlayers() {
+    document.getElementById("gameScreen").classList.remove("active");
+    document.getElementById("playerScreen").classList.add("active");
+    showPlayerInputs();
+  }
+
+  function goHome() {
+    document.getElementById("gameScreen").classList.remove("active");
+    document.getElementById("loginScreen").classList.add("active");
+  }
+
+  function exitGame() {
+    if (confirm("Are you sure you want to exit and clear all saved data?")) {
+      localStorage.clear();
+      location.reload();
+    }
+  }
+</script>
+</body>
+</html>
